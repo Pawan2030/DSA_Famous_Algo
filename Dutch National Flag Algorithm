@@ -1,0 +1,92 @@
+The Dutch National Flag algorithm, proposed by Edsger Dijkstra, is an efficient way to sort an array of elements that can be one of three distinct values. This algorithm is particularly useful for problems like sorting an array containing only 0s, 1s, and 2s.
+
+The goal is to partition the array into three parts:
+
+All 0s.
+All 1s.
+All 2s.
+How the Algorithm Works
+Initialization:
+
+We maintain three pointers:
+zero: Points to the boundary of the last 0.
+one: Current element under consideration.
+two: Points to the boundary of the first 2.
+Initially, zero and one are set to the beginning of the array, and two is set to the end.
+
+Processing the Array:
+
+Iterate through the array with the one pointer.
+Depending on the value of the current element nums[one], we perform different actions:
+If nums[one] == 0: Swap nums[one] with nums[zero], and move both zero and one pointers to the right.
+If nums[one] == 1: Simply move the one pointer to the right.
+If nums[one] == 2: Swap nums[one] with nums[two], and move the two pointer to the left. Do not move the one pointer forward because the swapped element (from the end) needs to be processed.
+Example: Sorting [2, 0, 2, 1, 1, 0]
+Let's walk through the steps:
+
+Initialization:
+
+zero = 0
+one = 0
+two = 5
+Array: [2, 0, 2, 1, 1, 0]
+First Iteration:
+
+nums[one] == 2, so swap nums[one] with nums[two]:
+Array after swap: [0, 0, 2, 1, 1, 2]
+Update pointers: zero = 0, one = 0, two = 4
+Second Iteration:
+
+nums[one] == 0, so swap nums[one] with nums[zero] (no change as both are 0):
+Array remains: [0, 0, 2, 1, 1, 2]
+Update pointers: zero = 1, one = 1, two = 4
+Third Iteration:
+
+nums[one] == 0, so swap nums[one] with nums[zero] (again no change):
+Array remains: [0, 0, 2, 1, 1, 2]
+Update pointers: zero = 2, one = 2, two = 4
+Fourth Iteration:
+
+nums[one] == 2, so swap nums[one] with nums[two]:
+Array after swap: [0, 0, 1, 1, 2, 2]
+Update pointers: zero = 2, one = 2, two = 3
+Fifth Iteration:
+
+nums[one] == 1, so move one pointer:
+Array remains: [0, 0, 1, 1, 2, 2]
+Update pointers: zero = 2, one = 3, two = 3
+Sixth Iteration:
+
+nums[one] == 1, so move one pointer:
+Array remains: [0, 0, 1, 1, 2, 2]
+Update pointers: zero = 2, one = 4, two = 3
+At this point, one is greater than two, so the loop terminates.
+
+Result
+The array is now sorted: [0, 0, 1, 1, 2, 2].
+
+Code Implementation
+Here is the fixed code:
+
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int zero = 0;      // Pointer to place 0s
+        int one = 0;       // Current element being processed
+        int two = nums.size() - 1;   // Pointer to place 2s
+
+        while (one <= two) {
+            if (nums[one] == 0) {
+                swap(nums[zero], nums[one]);
+                zero++;
+                one++;
+            } else if (nums[one] == 1) {
+                one++;
+            } else {
+                swap(nums[one], nums[two]);
+                two--;
+            }
+        }
+    }
+};
